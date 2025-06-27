@@ -40,6 +40,27 @@ body {
     font-weight: bold;
 }
 
+.home:hover {
+    cursor: pointer;
+}
+
+.search-box {
+    width: 90%;
+    padding: 8px 12px;
+    margin: 10px 0 15px 0;
+    border-radius: 5px;
+    border: 1px solid #333;
+    font-size: 16px;
+    background: #181818;
+    color: #fff;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.search-box:focus {
+    border: 1.5px solid rgb(34 34 34);
+}
+
 .heading {
     display: flex;
     gap: 15px;
@@ -141,7 +162,7 @@ body {
     align-items: center;
     justify-content: center;
     position: absolute;
-    bottom: 88px;
+    bottom: 110px;
     right: 17px;
     opacity: var(--a);
     transition: all 1s ease-out;
@@ -379,7 +400,7 @@ body {
     }
 
     .card {
-        width: 55vw;
+        width: 20vw;
     }
 
     .cardContainer {
@@ -406,11 +427,25 @@ body {
     .playbar {
         right: 25px;
     }
+
+    .play {
+        width: 28px;
+        height: 28px;
+        background-color: #1fdf64;
+        border-radius: 50%;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        bottom: 110px;
+        right: 17px;    
+    }
 }
 
 @media (max-width: 500px) {
     .card {
-        width: 100%;
+        width: 90%;
     }
 
     .header>* {
@@ -435,5 +470,10 @@ body {
 
     .left {
         width: 100vw;
+    }
+
+    .play {
+        bottom: 110px;
+        right: 77px;
     }
 }

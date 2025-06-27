@@ -90,14 +90,14 @@ async function displayAlbums() {
             let response = await a.json();
             cardContainer.innerHTML = cardContainer.innerHTML + ` <div data-folder="${folder}" class="card">
             <div class="play">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                <svg width="16" height="16" viewBox="0 0 22 22" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <path d="M5 20V4L19 12L5 20Z" stroke="#141B34" fill="#000" stroke-width="1.5"
                         stroke-linejoin="round" />
                 </svg>
             </div>
 
-            <img src="/songs/${folder}/cover.jpg" alt="">
+            <img width= "500" height= "200" src="/songs/${folder}/cover.jpg" alt="">
             <h2>${response.title}</h2>
             <p>${response.description}</p>
         </div>`
@@ -117,8 +117,21 @@ async function displayAlbums() {
 
 async function main() {
     // Get the list of all the songs
-    await getSongs("songs/ncs")
-    playMusic(songs[0], true)
+    async function main() {
+        // Display all the albums on the page first
+        await displayAlbums();
+
+        // Now get the list of all the songs from the first album, if any
+        let cardContainer = document.querySelector(".cardContainer");
+        let firstAlbum = cardContainer && cardContainer.querySelector(".card");
+        let initialFolder = firstAlbum ? `songs/${firstAlbum.dataset.folder}` : null;
+        if (initialFolder) {
+            await getSongs(initialFolder);
+            playMusic(songs[0], true);
+        }
+
+        // ...existing code for event listeners...
+    }
 
     // Display all the albums on the page
     await displayAlbums()
@@ -202,6 +215,39 @@ async function main() {
             document.querySelector(".range").getElementsByTagName("input")[0].value = 10;
         }
     })
+
+    // Add event listener to add functionality to home btn
+    document.querySelector('.home-btn').addEventListener('click', () => {
+        currentSong.pause();
+        play.src = "img/play.svg";
+        document.querySelector(".songinfo").innerHTML = "";
+        document.querySelector(".songtime").innerHTML = "00:00 / 00:00";
+
+        // Optionally, reset UI to home state here
+    });
+
+    // Add event listener to add functionality to search btn
+    document.querySelector('.search-btn').addEventListener('click', () => {
+        let searchBox = document.querySelector('.search-box');
+        if (!searchBox) {
+            searchBox = document.createElement('input');
+            searchBox.type = 'text';
+            searchBox.placeholder = 'Search songs...';
+            searchBox.className = 'search-box';
+            document.querySelector('.library').insertBefore(searchBox, document.querySelector('.songList'));
+            searchBox.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                const items = document.querySelectorAll('.songList ul li');
+                items.forEach(li => {
+                    const songName = li.querySelector('.info div').textContent.toLowerCase();
+                    li.style.display = songName.includes(query) ? '' : 'none';
+                });
+            });
+        } else {
+            searchBox.style.display = searchBox.style.display === 'none' ? 'block' : 'none';
+        }
+        searchBox.focus();
+    });
 }
 
 main()
